@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Coop Companion</string>
+    <string name="name">Name: </string>
+    <string name="people_assigned">People Assigned: </string>
+    <string name="tasks">Tasks</string>
+    <string name="resources">Resources</string>
 </resources>
