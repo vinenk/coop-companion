@@ -43,6 +43,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskLi
     }
 
     public void removeTask(int position) {
+        
         tasks.remove(position);
         notifyItemRemoved(position);
     }
