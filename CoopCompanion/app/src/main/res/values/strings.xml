@@ -4,4 +4,7 @@
     <string name="people_assigned">People Assigned: </string>
     <string name="tasks">Tasks</string>
     <string name="resources">Resources</string>
+    <string name="title_activity_authentication">Authentication</string>
+    <string name="title_activity_sign_up">SignUpActivity</string>
+    <string name="title_activity_log_in">LogInActivity</string>
 </resources>
