@@ -40,9 +40,9 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/loginButton"
         android:layout_toRightOf="@+id/appLogo"
+        android:layout_toEndOf="@+id/appLogo"
         android:id="@+id/signupButton"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
-
 
 </RelativeLayout>
