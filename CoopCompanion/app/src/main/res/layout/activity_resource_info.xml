@@ -1,6 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-</LinearLayout>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/resource_info_image" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/resource_title"
+        android:layout_toRightOf="@id/resource_info_image"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/resource_item_status"
+        android:text="@string/status_item_available"
+        android:layout_below="@id/resource_title"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/resource_collection_status"
+        android:text="@string/status_collection_available"
+        android:layout_below="@id/resource_item_status"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/change_item"
+        android:text="@string/change_status_item"
+        android:layout_below="@id/resource_collection_status"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/change_resitem_status"
+        android:text="@string/status_empty"
+        android:layout_below="@id/change_item"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/change_collection"
+        android:text="@string/change_status_collection"
+        android:layout_below="@id/change_resitem_status"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/change_rescoll_status"
+        android:text="@string/status_depleted"
+        android:layout_below="@id/change_collection"/>
+
+</RelativeLayout>

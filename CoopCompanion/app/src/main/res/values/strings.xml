@@ -10,4 +10,14 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_settings">Settings</string>
+    <string name="status_collection_depleted">Collection Status: DEPLETED</string>
+    <string name="status_collection_available">Collection Status: AVAILABLE</string>
+    <string name="status_item_empty">Item Status: EMPTY</string>
+    <string name="status_item_available">Item Status: AVAILABLE</string>
+    <string name="status_empty">EMPTY</string>
+    <string name="status_depleted">DEPLETED</string>
+    <string name="status_available">AVAILABLE</string>
+    <string name="change_status_item">Change Status Item</string>
+    <string name="change_status_collection">Change Status Collection</string>
+>>>>>>> Stashed changes
 </resources>
