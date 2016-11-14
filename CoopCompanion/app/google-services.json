@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "379246031453",
+    "firebase_url": "https://coop-companion.firebaseio.com",
+    "project_id": "coop-companion",
+    "storage_bucket": "coop-companion.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:379246031453:android:b33fbf6c6d8adfff",
+        "android_client_info": {
+          "package_name": "com.panjwani.ovais.coopcompanion"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "379246031453-lo459t3pau2mji97m3khqjvkse8ej2qu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.panjwani.ovais.coopcompanion",
+            "certificate_hash": "E578A36D69EAE4C8B072DA5B6C1C143AF4BEC32C"
+          }
+        },
+        {
+          "client_id": "379246031453-60lrjdb72q25e778subg0120nfh5lm3a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAG1H90XxpCuiC-y-h9PkC4wAu7CEfXSt8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "379246031453-60lrjdb72q25e778subg0120nfh5lm3a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

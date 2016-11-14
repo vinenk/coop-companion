@@ -19,5 +19,11 @@
     <string name="status_available">AVAILABLE</string>
     <string name="change_status_item">Change Status Item</string>
     <string name="change_status_collection">Change Status Collection</string>
->>>>>>> Stashed changes
+
+    <!-- Navigation Drawer menu labels -->
+    <string name="nav_home">Home</string>
+    <string name="nav_tasks">Tasks</string>
+    <string name="nav_resources">Resources</string>
+    <string name="nav_settings">Settings</string>
+
 </resources>
