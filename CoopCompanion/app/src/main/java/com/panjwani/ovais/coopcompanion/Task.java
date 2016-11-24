@@ -7,7 +7,7 @@ import java.util.Date;
  * Created by Mohammed on 10/31/2016.
  */
 
-public class Task {
+public class Task implements Comparable<Task>{
     public String name;
     public ArrayList<String> peopleAssigned;
     public Date date;
@@ -22,5 +22,10 @@ public class Task {
         this.repeatable = repeatable;
         this.repeat = repeat;
         this.description = description;
+    }
+
+    @Override
+    public int compareTo(Task o) {
+        return this.date.compareTo(o.date);
     }
 }

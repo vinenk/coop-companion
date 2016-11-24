@@ -33,7 +33,7 @@ public class ResourceListActivity extends AppCompatActivity {
         addResource.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), TaskCreateActivity.class);
+                Intent intent = new Intent(getContext(), ResourceCreateActivity.class);
                 getContext().startActivity(intent);
             }
         });
