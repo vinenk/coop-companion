@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -20,8 +21,13 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        AuthenticationFragment.AuthenticationInterface,
+        SignUpFragment.SignUpInterface, LoginFragment.LoginInterface,
+        Settings.SettingsInterface, CreateInvitations.CreateInvitationsInterface {
 
     private View navHeader;
     private TextView userName, userEmail;
@@ -30,7 +36,9 @@ public class MainActivity extends AppCompatActivity
 
 
     public int navItemPos = 0;
+    private User user;
     public static String TAG = "Coop Companion";
+    //private boolean signedIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +58,6 @@ public class MainActivity extends AppCompatActivity
 
         initializeFirebase();
 
-        Intent authActivity = new Intent(this, Authentication.class);
-        startActivity(authActivity);
     }
 
     @Override
@@ -99,7 +105,11 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_resources) {
 
         } else if (id == R.id.nav_settings) {
-
+            Settings settings = new Settings();
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.fragmentFrame, settings);
+            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            ft.commit();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -116,15 +126,107 @@ public class MainActivity extends AppCompatActivity
                 if (user != null) {
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                    //signedIn = true;
 
                 } else {
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged:signed_out");
-
+                    //signedIn = false;
+                    getSupportActionBar().hide();
+                    AuthenticationFragment authenticationFragment = AuthenticationFragment.newInstance();
+                    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                    ft.add(R.id.fragmentFrame, authenticationFragment);
+                    //ft.addToBackStack(null);
+                    ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                    ft.commit();
                 }
 
             }
         };
+
+    }
+
+    @Override
+    public void startLogIn() {
+        LoginFragment loginFragment = LoginFragment.newInstance();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.fragmentFrame, loginFragment);
+        ft.addToBackStack(null);
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        ft.commit();
+    }
+
+    @Override
+    public void startSignUp() {
+        SignUpFragment signUpFragment = SignUpFragment.newInstance();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.fragmentFrame, signUpFragment);
+        ft.addToBackStack(null);
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        ft.commit();
+    }
+
+    @Override
+    public void logInFinish(User user) {
+        //show action bar and load home fragment(upcoming), store given user object in shared preferences
+        getSupportActionBar().show();
+
+    }
+
+    @Override
+    public void signUpFinish(User user){
+        //set user object and load createInvitations fragment
+        this.user = user;
+
+        CreateInvitations createInvitationsFragment = CreateInvitations.newInstance();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.fragmentFrame, createInvitationsFragment);
+        //ft.addToBackStack(null);
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        ft.commit();
+    }
+
+    @Override
+    public void logOut() {
+        //clear sharedpreferences
+        // log out user and load Authentication fragment
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if(user != null){
+            mAuth.signOut();
+            /*
+            getSupportActionBar().hide();
+            AuthenticationFragment authenticationFragment = AuthenticationFragment.newInstance();
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.fragmentFrame, authenticationFragment);
+            //ft.addToBackStack(null);
+            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            ft.commit();
+            */
+        }
+    }
+
+    @Override
+    public void invitationsFinish(ArrayList<String> members) {
+        //set groupMembers list and the copy of the list, send invites, store User object in
+        //shared preferences and firebase database, then load createCalenderfragment
+        //once calender is created, show action bar and load home fragment(upcoming tasks and resources)
+        /* TODO: You can only create a group of five right now,
+            need to provide the option to add additional members
+        */
+
+        if(user != null) {
+
+            for (int i = 0; i < members.size(); i++) {
+                user.groupMembers.add(members.get(i));
+                user.groupMembersVariable.add(members.get(i));
+            }
+
+            //Add the email address of Admin to the list of members if he is also a resident
+            if(user.residentAdmin){
+                user.groupMembers.add(user.email);
+                user.groupMembersVariable.add(user.email);
+            }
+        }
 
     }
 

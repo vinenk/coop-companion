@@ -28,4 +28,17 @@
     <string name="nav_resources">Resources</string>
     <string name="nav_settings">Settings</string>
 
+    <!-- Login Strings -->
+    <string name="login_progress_signing_in">Signing in&#8230;</string>
+    <string name="error_incorrect_email_or_password">The password or email is incorrect</string>
+    <string name="error_password_too_short">This password is too short (less than 6 characters)</string>
+    <string name="error_intro">"Error: \n"</string>
+    <string name="error_blank_email">Please enter an email address</string>
+    <string name="error_blank_password">Please enter a password</string>
+    <string name="error_blank_first_name">First name cannot be blank</string>
+    <string name="error_blank_last_name">Last name cannot be blank</string>
+    <string name="error_blank_group_name">Group name cannot be blank</string>
+    <string name="error_mismatched_passwords">The passwords do not match</string>
+    <string name="error_join">"\n"</string>
+
 </resources>

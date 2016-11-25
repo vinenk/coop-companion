@@ -17,10 +17,10 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@android:color/transparent"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="86dp"
+        android:src="@drawable/logo_and_name"
         android:id="@+id/appLogo" />
 
     <Button
@@ -30,17 +30,13 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:id="@+id/loginButton"
-        android:layout_toLeftOf="@+id/appLogo"
-        android:layout_toStartOf="@+id/appLogo" />
+        android:id="@+id/loginButton" />
 
     <Button
         android:text="Sign Up"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/loginButton"
-        android:layout_toRightOf="@+id/appLogo"
-        android:layout_toEndOf="@+id/appLogo"
         android:id="@+id/signupButton"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
