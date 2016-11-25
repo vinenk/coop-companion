@@ -1,0 +1,95 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.panjwani.ovais.coopcompanion.CreateInvitations">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:text="SEND INVITES"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+        android:gravity="center"
+        android:textColor="@android:color/white"
+        android:background="@color/colorPrimary"
+        android:id="@+id/invitesLabel"/>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/invitesLabel"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="24dp"
+        android:id="@+id/emails_layout">
+
+        <EditText
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="E-mail 1"
+            android:inputType="textEmailAddress"
+            android:maxLines="1"
+            android:id="@+id/email1"/>
+
+        <EditText
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:hint="E-mail 2"
+            android:inputType="textEmailAddress"
+            android:maxLines="1"
+            android:id="@+id/email2"/>
+
+        <EditText
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:hint="E-mail 3"
+            android:inputType="textEmailAddress"
+            android:maxLines="1"
+            android:id="@+id/email3"/>
+
+        <EditText
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:hint="E-mail 4"
+            android:inputType="textEmailAddress"
+            android:maxLines="1"
+            android:id="@+id/email4"/>
+
+        <EditText
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:hint="E-mail 5"
+            android:inputType="textEmailAddress"
+            android:maxLines="1"
+            android:id="@+id/email5"/>
+
+    </LinearLayout>
+
+    <Button
+        android:text="Invite"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/emails_layout"
+        android:layout_marginTop="64dp"
+        android:id="@+id/inviteButton"
+        android:textColor="@android:color/white"
+        android:background="@color/colorPrimary"/>
+
+
+</RelativeLayout>
