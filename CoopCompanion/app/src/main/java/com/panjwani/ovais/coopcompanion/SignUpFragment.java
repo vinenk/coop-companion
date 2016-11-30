@@ -46,9 +46,11 @@ public class SignUpFragment extends Fragment {
     protected String confirmPassword;
     protected String groupName;
     protected boolean residentAdmin;
+    private FirebaseDatabaseManager fDManager;
 
-    public static SignUpFragment newInstance(){
+    public static SignUpFragment newInstance(FirebaseDatabaseManager fDManager){
         SignUpFragment signUpFragment = new SignUpFragment();
+        signUpFragment.setFDManager(fDManager);
         return signUpFragment;
     }
 
@@ -113,6 +115,18 @@ public class SignUpFragment extends Fragment {
                     return;
                 }
 
+                //Check if the groupName is already in use
+                fDManager.checkGroupNameInList(groupName, new FirebaseDatabaseManager.checkGroupNameInListListener() {
+                    @Override
+                    public void result(boolean result) {
+                        if(result){
+                            String error = "Group Name " + groupName + " already exists, Please choose a different group name.";
+                            Toast.makeText(getActivity(), error, Toast.LENGTH_LONG).show();
+                            return;
+                        }
+                    }
+                });
+
                 // Set up a progress dialog
                 final ProgressDialog dialog = new ProgressDialog(getActivity());
                 dialog.setTitle("Please wait.");
@@ -147,6 +161,8 @@ public class SignUpFragment extends Fragment {
                                     user.groupName = groupName;
                                     user.groupMembers = new ArrayList<String>();
                                     user.groupMembersVariable = new ArrayList<String>();
+                                    user.resourceIDs = new ArrayList<String>();
+                                    user.uID = mAuth.getCurrentUser().getUid();
                                     signUpInterface.signUpFinish(user);
                                 }
                             }
@@ -155,5 +171,9 @@ public class SignUpFragment extends Fragment {
             }
         });
 
+    }
+
+    public void setFDManager(FirebaseDatabaseManager fDManager){
+        this.fDManager = fDManager;
     }
 }

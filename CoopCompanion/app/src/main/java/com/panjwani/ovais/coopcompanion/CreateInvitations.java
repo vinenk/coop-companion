@@ -26,7 +26,7 @@ public class CreateInvitations extends Fragment {
     }
 
     private CreateInvitations.CreateInvitationsInterface createInvitationsInterface;
-    public static String TAG = "SignUp";
+    public static String TAG = "Invitations";
     protected Button inviteButton;
     protected String email1;
     protected String email2;

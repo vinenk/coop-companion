@@ -1,6 +1,7 @@
 package com.panjwani.ovais.coopcompanion;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -40,6 +42,10 @@ public class MainActivity extends AppCompatActivity
     public static String TAG = "Coop Companion";
     //private boolean signedIn;
 
+    SharedPreferences prefs;
+    SharedPreferences.Editor prefsEditor;
+    FirebaseDatabaseManager fDManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +61,11 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        prefs = getPreferences(MODE_PRIVATE);
+        prefsEditor = prefs.edit();
+
+        fDManager = new FirebaseDatabaseManager();
 
         initializeFirebase();
 
@@ -127,11 +138,14 @@ public class MainActivity extends AppCompatActivity
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
                     //signedIn = true;
-
+                    //User thisUser = getUserObject();
+                    //fDManager.updateGroupName(thisUser.groupName);
+                    //load home fragment here
                 } else {
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged:signed_out");
                     //signedIn = false;
+                    fDManager.updateGroupName(null);
                     getSupportActionBar().hide();
                     AuthenticationFragment authenticationFragment = AuthenticationFragment.newInstance();
                     FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -158,7 +172,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void startSignUp() {
-        SignUpFragment signUpFragment = SignUpFragment.newInstance();
+        SignUpFragment signUpFragment = SignUpFragment.newInstance(fDManager);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragmentFrame, signUpFragment);
         ft.addToBackStack(null);
@@ -177,6 +191,8 @@ public class MainActivity extends AppCompatActivity
     public void signUpFinish(User user){
         //set user object and load createInvitations fragment
         this.user = user;
+        //save in shared preferences
+        saveUserObject(user);
 
         CreateInvitations createInvitationsFragment = CreateInvitations.newInstance();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -189,10 +205,11 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void logOut() {
         //clear sharedpreferences
-        // log out user and load Authentication fragment
+        // log out user and load Authentication fragment, change groupname in fDManager to null
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if(user != null){
             mAuth.signOut();
+            fDManager.updateGroupName(null);
             /*
             getSupportActionBar().hide();
             AuthenticationFragment authenticationFragment = AuthenticationFragment.newInstance();
@@ -242,5 +259,21 @@ public class MainActivity extends AppCompatActivity
         if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
         }
+        //saveUserObject(this.user);
+    }
+
+    public User getUserObject(){
+        Gson gson = new Gson();
+        String json = prefs.getString("User", "");
+        this.user = gson.fromJson(json, User.class);
+        return this.user;
+    }
+
+    public void saveUserObject(User usr){
+        Gson gson = new Gson();
+        String json = gson.toJson(usr);
+        prefsEditor.putString("User", json);
+        prefsEditor.commit();
+        Log.d("User object saved for ", usr.email);
     }
 }

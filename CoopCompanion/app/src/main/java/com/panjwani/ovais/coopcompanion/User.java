@@ -12,5 +12,51 @@ public class User {
     protected String groupName;
     protected ArrayList<String> groupMembers;
     protected ArrayList<String> groupMembersVariable;
+    protected ArrayList<String> resourceIDs;
+    protected String uID;
+
+    public User(){
+
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public boolean isAdmin() {
+        return admin;
+    }
+
+    public boolean isResidentAdmin() {
+        return residentAdmin;
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public ArrayList<String> getGroupMembers() {
+        return groupMembers;
+    }
+
+    public ArrayList<String> getGroupMembersVariable() {
+        return groupMembersVariable;
+    }
+
+    public ArrayList<String> getResourceIDs() {
+        return resourceIDs;
+    }
+
+    public String getuID() {
+        return uID;
+    }
 
 }

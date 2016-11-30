@@ -29,7 +29,7 @@ public class ResourceListAdapter extends RecyclerView.Adapter<ResourceListAdapte
     @Override
     public void onBindViewHolder(ResourceListViewHolder holder, int position) {
         Resource resource = resources.get(position);
-        holder.resourceImage.setImageBitmap(resource.image);
+        //holder.resourceImage.setImageBitmap(resource.image);
     }
 
     @Override
@@ -52,7 +52,7 @@ public class ResourceListAdapter extends RecyclerView.Adapter<ResourceListAdapte
 
         public ResourceListViewHolder(View itemView) {
             super(itemView);
-            this.resourceImage = (ImageView) itemView.findViewById(R.id.resource_image);
+            //this.resourceImage = (ImageView) itemView.findViewById(R.id.resource_image);
         }
 
         @Override
