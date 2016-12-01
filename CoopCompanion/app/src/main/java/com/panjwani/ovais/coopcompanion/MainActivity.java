@@ -1,8 +1,12 @@
 package com.panjwani.ovais.coopcompanion;
 
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -24,6 +28,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -37,9 +42,12 @@ public class MainActivity extends AppCompatActivity
     protected FirebaseAuth.AuthStateListener mAuthListener;
 
 
+    public static final String MYPREFERENCES = "myPrefs";
+    public static final String USER = "User";
     public int navItemPos = 0;
     private User user;
     public static String TAG = "Coop Companion";
+    public static Uri calUri;
     //private boolean signedIn;
 
     SharedPreferences prefs;
@@ -62,8 +70,7 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        prefs = getPreferences(MODE_PRIVATE);
-        prefsEditor = prefs.edit();
+        prefs = getSharedPreferences(MYPREFERENCES, MODE_PRIVATE);
 
         fDManager = new FirebaseDatabaseManager();
 
@@ -194,6 +201,32 @@ public class MainActivity extends AppCompatActivity
         //save in shared preferences
         saveUserObject(user);
 
+        final ContentValues cv = new ContentValues();
+        cv.put(CalendarContract.Calendars.ACCOUNT_NAME, user.firstName + " " + user.lastName);
+        cv.put(CalendarContract.Calendars.ACCOUNT_TYPE, CalendarContract.ACCOUNT_TYPE_LOCAL);
+        cv.put(CalendarContract.Calendars.NAME, user.groupName);
+        cv.put(CalendarContract.Calendars.CALENDAR_DISPLAY_NAME, user.groupName);
+        cv.put(CalendarContract.Calendars.CALENDAR_COLOR, 0xEA8561);
+        //user can only read the calendar
+        if (user.admin) {
+            cv.put(CalendarContract.Calendars.CALENDAR_ACCESS_LEVEL, CalendarContract.Calendars.CAL_ACCESS_OWNER);
+        } else {
+            cv.put(CalendarContract.Calendars.CALENDAR_ACCESS_LEVEL, CalendarContract.Calendars.CAL_ACCESS_CONTRIBUTOR);
+        }
+        cv.put(CalendarContract.Calendars.OWNER_ACCOUNT, user.firstName + " " + user.lastName);
+        cv.put(CalendarContract.Calendars.VISIBLE, 1);
+        cv.put(CalendarContract.Calendars.SYNC_EVENTS, 1);
+        Uri uri = CalendarContract.Calendars.CONTENT_URI
+                .buildUpon()
+                .appendQueryParameter(CalendarContract.CALLER_IS_SYNCADAPTER, "true")
+                .appendQueryParameter(CalendarContract.Calendars.ACCOUNT_NAME, user.firstName + " " + user.lastName)
+                .appendQueryParameter(CalendarContract.Calendars.ACCOUNT_TYPE,
+                        CalendarContract.ACCOUNT_TYPE_LOCAL)
+                .build();
+        ContentResolver cr = getApplicationContext().getContentResolver();
+        calUri = cr.insert(uri, cv);
+        Long CAL_ID = Long.parseLong(calUri.getLastPathSegment());
+
         CreateInvitations createInvitationsFragment = CreateInvitations.newInstance();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragmentFrame, createInvitationsFragment);
@@ -264,7 +297,7 @@ public class MainActivity extends AppCompatActivity
 
     public User getUserObject(){
         Gson gson = new Gson();
-        String json = prefs.getString("User", "");
+        String json = prefs.getString(USER, "");
         this.user = gson.fromJson(json, User.class);
         return this.user;
     }
@@ -272,7 +305,8 @@ public class MainActivity extends AppCompatActivity
     public void saveUserObject(User usr){
         Gson gson = new Gson();
         String json = gson.toJson(usr);
-        prefsEditor.putString("User", json);
+        prefsEditor = prefs.edit();
+        prefsEditor.putString(USER, json);
         prefsEditor.commit();
         Log.d("User object saved for ", usr.email);
     }

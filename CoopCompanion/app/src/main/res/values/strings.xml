@@ -1,9 +1,14 @@
 <resources>
     <string name="app_name">Coop Companion</string>
     <string name="name">Name: </string>
-    <string name="people_assigned">People Assigned: </string>
+    <string name="people_assigned">People Assigned </string>
     <string name="due_date">Due Date: </string>
     <string name="status">Status: </string>
+    <string name="repeatable">Repeatable: </string>
+    <string name="repeat">Repeat: </string>
+    <string name="description">Description: </string>
+    <string name="add_people">Add People</string>
+    <string name="add_due_date">Add Due Date</string>
     <string name="tasks">Tasks</string>
     <string name="resources">Resources</string>
     <string name="title_activity_authentication">Authentication</string>

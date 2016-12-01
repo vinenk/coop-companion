@@ -5,39 +5,80 @@
 
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="@string/name"
+        android:id="@+id/string_name"/>
     <EditText
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:id="@+id/create_task_name"
+        android:layout_toRightOf="@id/string_name"/>
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:id="@+id/checked_people"
+        android:layout_below="@id/string_name"/>
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <CalendarView
+        android:layout_height="wrap_content"
+        android:text="@string/people_assigned"
+        android:id="@+id/string_people_assigned"
+        android:layout_below="@id/checked_people"/>
+    <Button
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:id="@+id/add_people"
+        android:text="@string/add_people"
+        android:layout_below="@id/checked_people"
+        android:layout_toRightOf="@id/string_people_assigned"/>
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:id="@+id/string_due_date"
+        android:text="@string/due_date"
+        android:layout_below="@id/string_people_assigned"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/due_date"
+        android:layout_below="@id/string_people_assigned"
+        android:layout_toRightOf="@id/string_due_date"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/add_due_date"
+        android:layout_below="@id/string_people_assigned"
+        android:layout_toRightOf="@id/due_date"/>
     <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/repeatable"
+        android:text="@string/repeatable"
+        android:layout_below="@id/string_due_date"/>
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:id="@+id/string_repeat"
+        android:text="@string/repeat"
+        android:layout_below="@id/repeatable"/>
     <Spinner
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:id="@+id/repeat_var"
+        android:layout_below="@id/repeatable"
+        android:layout_toRightOf="@id/string_repeat"
+        android:clickable="false"/>
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:id="@+id/string_description"
+        android:text="@string/description"
+        android:layout_below="@id/string_repeat"/>
     <EditText
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:id="@+id/description"
+        android:layout_below="@id/string_repeat"
+        android:layout_toRightOf="@id/string_description"/>
 
 </RelativeLayout>
