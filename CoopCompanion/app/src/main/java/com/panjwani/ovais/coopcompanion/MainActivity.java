@@ -43,11 +43,19 @@ public class MainActivity extends AppCompatActivity
     private User user;
     public static String TAG = "Coop Companion";
     public static Uri calUri;
-    //private boolean signedIn;
+    public boolean signedIn;
 
     SharedPreferences prefs;
     SharedPreferences.Editor prefsEditor;
     FirebaseDatabaseManager fDManager;
+
+    public static final String HOME = "HOME";
+    public static final String TASKS = "TASKS";
+    public static final String RESOURCES = "RESOURCES";
+    public static final String SETTINGS = "SETTINGS";
+
+    protected ArrayList<String> fragmentTitles;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +79,18 @@ public class MainActivity extends AppCompatActivity
 
         initializeFirebase();
 
+        fragmentTitles = new ArrayList<>();
+        fragmentTitles.add(HOME);
+        fragmentTitles.add(TASKS);
+        fragmentTitles.add(RESOURCES);
+        fragmentTitles.add(SETTINGS);
+
+        /*
+        if(signedIn){
+            navItemPos = 0;
+        }
+        */
+        //loadFragment();
     }
 
     @Override
@@ -78,9 +98,19 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
+        }
+        else if(navItemPos != 0) {
+            navItemPos = 0;
+            loadFragment();
+        }
+        else {
             super.onBackPressed();
         }
+
+
+
+
+
     }
 
     @Override
@@ -113,20 +143,27 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_home) {
             // Handle the home action
+            navItemPos = 0;
         } else if (id == R.id.nav_tasks) {
-
+            navItemPos = 1;
         } else if (id == R.id.nav_resources) {
-
+            navItemPos = 2;
         } else if (id == R.id.nav_settings) {
+
+            navItemPos = 3;
+            /*
             Settings settings = new Settings();
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.fragmentFrame, settings);
             ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
             ft.commit();
+            */
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
+
+        loadFragment();
         return true;
     }
 
@@ -139,25 +176,31 @@ public class MainActivity extends AppCompatActivity
                 if (user != null) {
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-                    //signedIn = true;
+                    signedIn = true;
                     User thisUser = getUserObject();
                     if(thisUser != null){
                         fDManager.updateGroupName(thisUser.groupName);
                         Log.d("userobj"," " + thisUser);
                     }
                     //load home fragment here
+                        //setSignIn(true);
+                        //loadFragment(true);
+
                 } else {
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged:signed_out");
-                    //signedIn = false;
+                    signedIn = false;
                     fDManager.updateGroupName(null);
-                    getSupportActionBar().hide();
+                    //setSignIn(false);
+                    //loadFragment(false);
+                    /*
                     AuthenticationFragment authenticationFragment = AuthenticationFragment.newInstance();
                     FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                     ft.add(R.id.fragmentFrame, authenticationFragment);
                     //ft.addToBackStack(null);
                     ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                     ft.commit();
+                    */
                 }
 
             }
@@ -167,6 +210,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void startLogIn() {
+        databaseTest();
         LoginFragment loginFragment = LoginFragment.newInstance(fDManager);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragmentFrame, loginFragment);
@@ -194,6 +238,8 @@ public class MainActivity extends AppCompatActivity
         saveUserObject(usr);
         fDManager.updateGroupName(usr.groupName);
         //databaseTest();
+        navItemPos = 0;
+        loadFragment();
 
     }
 
@@ -209,7 +255,7 @@ public class MainActivity extends AppCompatActivity
         CreateInvitations createInvitationsFragment = CreateInvitations.newInstance();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragmentFrame, createInvitationsFragment);
-        ft.addToBackStack(null);
+        //ft.addToBackStack(null);
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         ft.commit();
     }
@@ -231,6 +277,7 @@ public class MainActivity extends AppCompatActivity
             ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
             ft.commit();
             */
+            loadFragment();
         }
     }
 
@@ -260,7 +307,11 @@ public class MainActivity extends AppCompatActivity
             fDManager.updateUserObj(user);
         }
 
+        //send email invites
         SendEmail emailInvites = new SendEmail(user.groupName, members, this);
+
+        navItemPos = 0;
+        loadFragment();
     }
 
     @Override
@@ -313,8 +364,8 @@ public class MainActivity extends AppCompatActivity
         fDManager.addResource(resource);
         */
 
-        /*
-        fDManager.getResourcesList(new FirebaseDatabaseManager.resourceListListener() {
+
+        fDManager.getResourcesList(user, new FirebaseDatabaseManager.resourceListListener() {
             @Override
             public void resourceListCallback(ArrayList<Resource> resources) {
                 Log.d("ResourceListTest", " "+resources.size());
@@ -323,6 +374,68 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         });
-        */
+
+    }
+
+    public void loadFragment(){
+        if(signedIn){
+
+            getSupportActionBar().show();
+
+            if(navItemPos == 0){
+                setFragmentTitle();
+                UpcomingListActivity upcomingListActivity = UpcomingListActivity.newInstance(fDManager, this);
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.fragmentFrame, upcomingListActivity);
+                //ft.addToBackStack(null);
+                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                ft.commit();
+            }
+            else if( navItemPos == 1){
+                setFragmentTitle();
+                TaskListActivity taskListActivity = TaskListActivity.newInstance(fDManager, this);
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.fragmentFrame, taskListActivity);
+                //ft.addToBackStack(null);
+                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                ft.commit();
+            }
+            else if( navItemPos == 2){
+                setFragmentTitle();
+                ResourceListActivity resourceListActivity = ResourceListActivity.newInstance(fDManager, this);
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.fragmentFrame, resourceListActivity);
+                //ft.addToBackStack(null);
+                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                ft.commit();
+            }
+            else if( navItemPos == 3){
+                setFragmentTitle();
+                Settings settings = new Settings();
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.fragmentFrame, settings);
+                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                ft.commit();
+            }
+
+        }
+        else{
+            getSupportActionBar().hide();
+            AuthenticationFragment authenticationFragment = AuthenticationFragment.newInstance();
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.add(R.id.fragmentFrame, authenticationFragment);
+            //ft.addToBackStack(null);
+            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            ft.commit();
+        }
+    }
+
+    public void setFragmentTitle(){
+        getSupportActionBar().setTitle(fragmentTitles.get(navItemPos));
+    }
+
+    public void setSignIn(boolean flag){
+        this.signedIn = flag;
+        Log.d("signIn", " "+flag);
     }
 }

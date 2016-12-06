@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/string_due_date"
         android:text="@string/due_date"
-        android:layout_below="@id/string_people_assigned"/>
+        android:layout_below="@id/add_people"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -47,6 +47,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/add_due_date"
+        android:text="@string/add_due_date"
         android:layout_below="@id/string_people_assigned"
         android:layout_toRightOf="@id/due_date"/>
     <CheckBox
@@ -54,18 +55,24 @@
         android:layout_height="wrap_content"
         android:id="@+id/repeat_weekly"
         android:text="@string/repeat_weekly"
-        android:layout_below="@id/string_due_date"/>
+        android:layout_below="@id/add_due_date"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/string_description"
         android:text="@string/description"
-        android:layout_below="@id/string_due_date"/>
+        android:layout_below="@id/repeat_weekly"/>
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/description"
-        android:layout_below="@id/string_due_date"
+        android:layout_below="@id/repeat_weekly"
         android:layout_toRightOf="@id/string_description"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/submit_task"
+        android:text="@string/submit"
+        android:layout_below="@id/string_description"/>
 
 </RelativeLayout>

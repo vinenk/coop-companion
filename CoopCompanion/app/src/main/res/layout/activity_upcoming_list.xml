@@ -15,10 +15,12 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/upcomingview_add_resource"/>
+        android:id="@+id/upcomingview_add_resource"
+        android:text="@string/add_resource"/>
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/upcomingview_add_task"/>
+        android:id="@+id/upcomingview_add_task"
+        android:text="@string/add_task"/>
 
 </LinearLayout>

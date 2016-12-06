@@ -31,11 +31,12 @@ public class ResourceCreateActivity extends AppCompatActivity {
 
         final ArrayList<String> users = getIntent().getStringArrayListExtra("users");
 
-        EditText resourceName = (EditText) findViewById(R.id.create_resource_name);
+        final EditText resourceName = (EditText) findViewById(R.id.create_resource_name);
         checkedPeople = (TextView) findViewById(R.id.checked_people);
         Button addPeople = (Button) findViewById(R.id.add_people);
-        CheckBox collection = (CheckBox) findViewById(R.id.collection);
-        EditText description = (EditText) findViewById(R.id.description);
+        final CheckBox collection = (CheckBox) findViewById(R.id.collection);
+        final EditText description = (EditText) findViewById(R.id.description);
+        Button submitResource = (Button) findViewById(R.id.submit_resource);
 
         addPeople.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,7 +47,20 @@ public class ResourceCreateActivity extends AppCompatActivity {
             }
         });
 
-        Resource resource = new Resource(resourceName.getText().toString(), checkedUsers, collection.isChecked(), description.getText().toString());
+        submitResource.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ResourceListActivity.class);
+                Bundle b = new Bundle();
+                b.putString("resourceName", resourceName.getText().toString());
+                b.putStringArrayList("checkedUsers", checkedUsers);
+                b.putBoolean("collection", collection.isChecked());
+                b.putString("description", description.getText().toString());
+                intent.putExtras(b);
+                setResult(RESULT_OK, intent);
+                finish();
+            }
+        });
 
     }
 
@@ -55,9 +69,12 @@ public class ResourceCreateActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == REQUESTCODE) {
-            checkedUsers = new ArrayList<>(Arrays.asList(data.getStringArrayExtra("checkedUsers")));
-            String checked = checkedUsers.toString();
-            checked = checked.substring(1, checked.length()-1);
+            checkedUsers = data.getStringArrayListExtra("checkedUsers");
+            String checked = "";
+            if (checkedUsers.size() != 0) {
+                checked = checkedUsers.toString();
+                checked = checked.substring(1, checked.length()-1);
+            }
             checkedPeople.setText(checked);
         }
     }

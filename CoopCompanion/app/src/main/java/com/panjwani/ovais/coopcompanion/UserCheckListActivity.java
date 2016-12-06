@@ -21,7 +21,8 @@ public class UserCheckListActivity extends AppCompatActivity implements UserChec
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_check_list);
-        ArrayList<String> users = new ArrayList<>();
+        Intent intent = getIntent();
+        ArrayList<String> users = intent.getStringArrayListExtra("users");
         checkedUsers = new ArrayList<>();
         ListView userCheckList = (ListView) findViewById(R.id.lv_user_check);
         UserCheckListAdapter restaurantAdapter = new UserCheckListAdapter(this, this, users);

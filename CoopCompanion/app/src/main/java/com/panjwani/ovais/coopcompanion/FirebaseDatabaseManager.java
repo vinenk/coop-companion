@@ -1,5 +1,7 @@
 package com.panjwani.ovais.coopcompanion;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -15,7 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class FirebaseDatabaseManager {
+public class FirebaseDatabaseManager implements Parcelable{
 
     public interface userObjectListener{
         void adminUserCallback(User admin);
@@ -138,7 +140,7 @@ public class FirebaseDatabaseManager {
 
     }
 
-    public void getAdminUser(String groupName, final userObjectListener listener){
+    public void getAdminUser(final String groupName, final userObjectListener listener){
 
         final DatabaseReference dBref = FirebaseDatabase.getInstance().getReference(groupName);
 
@@ -153,7 +155,10 @@ public class FirebaseDatabaseManager {
                         for (DataSnapshot adminSnapshot : dataSnapshot.getChildren()) {
                             User admin = adminSnapshot.getValue(User.class);
                             Log.d("Admin user object ", "email: " + admin.email);
-                            listener.adminUserCallback(admin);
+                            if(admin.groupName.equals(groupName)){
+                                listener.adminUserCallback(admin);
+                                break;
+                            }
                         }
                     }
                     else {
@@ -501,13 +506,13 @@ public class FirebaseDatabaseManager {
 
     }
 
-    private static ArrayList<Task> taskList;
-    public void getTasksList(taskListListener listener) {
+    public void getTasksList(final User user, final taskListListener listener) {
         if (dB == null) {
             Log.d(TAG, "dB is null!");
             return;
         }
 
+        /*
         taskList = new ArrayList<>();
 
         getCurrentUser(new userObjectListener() {
@@ -532,17 +537,43 @@ public class FirebaseDatabaseManager {
         });
 
         listener.taskListCallback(taskList);
+        */
+
+        dB.child("Tasks").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    //Getting task objects from snapshot
+                    ArrayList<Task> taskList = new ArrayList<>();
+                    if(user.taskIDs != null) {
+                        for (int i = 0; i < user.taskIDs.size(); i++) {
+                            Task task = dataSnapshot.child(user.taskIDs.get(i)).getValue(Task.class);
+                            taskList.add(task);
+                        }
+                    }
+                    listener.taskListCallback(taskList);
+                }
+                else {
+                    Log.d(TAG, "No tasks created");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d(TAG, "getTasksList call cancelled");
+            }
+        });
+
     }
 
-    private static ArrayList<Resource> resourceList = new ArrayList<>();
-    public void getResourcesList(resourceListListener listener) {
+    public void getResourcesList(final User user, final resourceListListener listener) {
         if (dB == null) {
             Log.d(TAG, "dB is null!");
             return;
         }
 
-        resourceList.clear();
-        getCurrentUser(new userObjectListener() {
+        //resourceList.clear();
+        /*getCurrentUser(new userObjectListener() {
             @Override
             public void adminUserCallback(User admin) {
 
@@ -562,8 +593,33 @@ public class FirebaseDatabaseManager {
                 }
             }
         });
+        */
 
-        listener.resourceListCallback(resourceList);
+        dB.child("Resources").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()) {
+                    //Getting resource objects from snapshot
+                    ArrayList<Resource> resourceList = new ArrayList<>();
+                    if (user.resourceIDs != null) {
+                        for (int i = 0; i < user.resourceIDs.size(); i++) {
+                            Resource resource = dataSnapshot.child(user.resourceIDs.get(i)).getValue(Resource.class);
+                            resourceList.add(resource);
+                        }
+                    }
+                    listener.resourceListCallback(resourceList);
+                }
+                else {
+                    Log.d(TAG, "No resources created");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d(TAG, "getResourcesList call cancelled");
+            }
+        });
+
     }
 
     public void getResource(String iD, final resourceListener listener) {
@@ -617,14 +673,14 @@ public class FirebaseDatabaseManager {
     }
 
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
 
 
-
-
-
-
-
-
-
-
+    }
 }

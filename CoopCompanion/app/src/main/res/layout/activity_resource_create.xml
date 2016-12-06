@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/collection"
         android:text="@string/collection"
-        android:layout_below="@id/string_due_date"/>
+        android:layout_below="@id/add_people"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -49,5 +49,11 @@
         android:id="@+id/description"
         android:layout_below="@id/collection"
         android:layout_toRightOf="@id/string_description"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/submit_resource"
+        android:text="@string/submit"
+        android:layout_below="@id/string_description"/>
 
 </RelativeLayout>

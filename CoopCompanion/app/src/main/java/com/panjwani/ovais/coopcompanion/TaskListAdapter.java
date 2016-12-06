@@ -33,7 +33,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskLi
         for (String person : task.peopleAssigned) {
             peopleAssigned += person + ", ";
         }
-        peopleAssigned = peopleAssigned.substring(peopleAssigned.length()-3, peopleAssigned.length()-1);
+        peopleAssigned = peopleAssigned.substring(0, peopleAssigned.length()-2);
         holder.people.setText(peopleAssigned);
     }
 

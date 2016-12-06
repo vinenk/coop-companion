@@ -37,13 +37,14 @@ public class TaskCreateActivity extends AppCompatActivity {
 
         final ArrayList<String> users = getIntent().getStringArrayListExtra("users");
 
-        EditText taskName = (EditText) findViewById(R.id.create_task_name);
+        final EditText taskName = (EditText) findViewById(R.id.create_task_name);
         checkedPeople = (TextView) findViewById(R.id.checked_people);
         Button addPeople = (Button) findViewById(R.id.add_people);
         final TextView dueDate = (TextView) findViewById(R.id.due_date);
         Button addDueDate = (Button) findViewById(R.id.add_due_date);
-        CheckBox repeatWeekly = (CheckBox) findViewById(R.id.repeat_weekly);
-        EditText description = (EditText) findViewById(R.id.description);
+        final CheckBox repeatWeekly = (CheckBox) findViewById(R.id.repeat_weekly);
+        final EditText description = (EditText) findViewById(R.id.description);
+        Button submitTask = (Button) findViewById(R.id.submit_task);
 
         addPeople.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,7 +59,7 @@ public class TaskCreateActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Calendar c = Calendar.getInstance();
-                DatePickerDialog dpd = new DatePickerDialog(getApplicationContext(), new DatePickerDialog.OnDateSetListener() {
+                DatePickerDialog dpd = new DatePickerDialog(TaskCreateActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         Date d = new Date(year, month, dayOfMonth);
@@ -70,7 +71,22 @@ public class TaskCreateActivity extends AppCompatActivity {
             }
         });
 
-        Task task = new Task(taskName.getText().toString(), checkedUsers, date, repeatWeekly.isChecked(), description.getText().toString());
+        submitTask.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), TaskListActivity.class);
+                Bundle b = new Bundle();
+                b.putString("taskName", taskName.getText().toString());
+                b.putStringArrayList("checkedUsers", checkedUsers);
+                b.putLong("date", date);
+                b.putBoolean("repeatWeekly", repeatWeekly.isChecked());
+                b.putString("description", description.getText().toString());
+                intent.putExtras(b);
+                setResult(RESULT_OK, intent);
+                finish();
+            }
+        });
+
 
      }
 
@@ -79,9 +95,12 @@ public class TaskCreateActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == REQUESTCODE) {
-            checkedUsers = new ArrayList<>(Arrays.asList(data.getStringArrayExtra("checkedUsers")));
-            String checked = checkedUsers.toString();
-            checked = checked.substring(1, checked.length()-1);
+            checkedUsers = data.getStringArrayListExtra("checkedUsers");
+            String checked = "";
+            if (checkedUsers.size() != 0) {
+                checked = checkedUsers.toString();
+                checked = checked.substring(1, checked.length()-1);
+            }
             checkedPeople.setText(checked);
         }
     }
