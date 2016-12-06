@@ -29,6 +29,7 @@ public class Resource {
     public String description;
     public SingleStatus singleStatus;
     public CollectionStatus collectionStatus;
+    public String rID;
 
     //default constructor required to store custom object
     public Resource() {
@@ -111,6 +112,10 @@ public class Resource {
 
     public boolean isCollection() {
         return collection;
+    }
+
+    public String getrID() {
+        return rID;
     }
 
 }

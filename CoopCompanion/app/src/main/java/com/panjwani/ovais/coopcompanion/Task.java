@@ -10,10 +10,12 @@ import java.util.Date;
 public class Task implements Comparable<Task>{
     public String name;
     public ArrayList<String> peopleAssigned;
+    public String personAssigned;
     public Long date;   //changed to Long Date to work with firebase database
     public boolean repeatable;
     public String repeat;
     public String description;
+    public String tID;
 
     //Default constructor required for firebase database
     public Task() {
@@ -43,7 +45,7 @@ public class Task implements Comparable<Task>{
         return peopleAssigned;
     }
 
-    //might need to change this
+    //changed to Long Date to work with firebase database
     public Long getDate() {
         return date;
     }
@@ -58,5 +60,9 @@ public class Task implements Comparable<Task>{
 
     public String getDescription() {
         return description;
+    }
+
+    public String gettID() {
+        return tID;
     }
 }

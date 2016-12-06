@@ -13,6 +13,7 @@ public class User {
     protected ArrayList<String> groupMembers;
     protected ArrayList<String> groupMembersVariable;
     protected ArrayList<String> resourceIDs;
+    protected ArrayList<String> taskIDs;
     protected String uID;
 
     public User(){
@@ -57,6 +58,10 @@ public class User {
 
     public String getuID() {
         return uID;
+    }
+
+    public ArrayList<String> getTaskIDs() {
+        return taskIDs;
     }
 
 }

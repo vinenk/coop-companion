@@ -162,7 +162,9 @@ public class SignUpFragment extends Fragment {
                                     user.groupMembers = new ArrayList<String>();
                                     user.groupMembersVariable = new ArrayList<String>();
                                     user.resourceIDs = new ArrayList<String>();
+                                    user.taskIDs = new ArrayList<String>();
                                     user.uID = mAuth.getCurrentUser().getUid();
+                                    fDManager.addtoGroupNamesList(user.groupName);
                                     signUpInterface.signUpFinish(user);
                                 }
                             }

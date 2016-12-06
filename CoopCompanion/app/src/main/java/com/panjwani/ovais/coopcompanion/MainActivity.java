@@ -34,7 +34,9 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         AuthenticationFragment.AuthenticationInterface,
         SignUpFragment.SignUpInterface, LoginFragment.LoginInterface,
-        Settings.SettingsInterface, CreateInvitations.CreateInvitationsInterface {
+        Settings.SettingsInterface, CreateInvitations.CreateInvitationsInterface,
+        FirebaseDatabaseManager.userObjectUpdateListener {
+
 
     private View navHeader;
     private TextView userName, userEmail;
@@ -72,7 +74,7 @@ public class MainActivity extends AppCompatActivity
 
         prefs = getSharedPreferences(MYPREFERENCES, MODE_PRIVATE);
 
-        fDManager = new FirebaseDatabaseManager();
+        fDManager = new FirebaseDatabaseManager(this);
 
         initializeFirebase();
 
@@ -145,8 +147,11 @@ public class MainActivity extends AppCompatActivity
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
                     //signedIn = true;
-                    //User thisUser = getUserObject();
-                    //fDManager.updateGroupName(thisUser.groupName);
+                    User thisUser = getUserObject();
+                    if(thisUser != null){
+                        fDManager.updateGroupName(thisUser.groupName);
+                        Log.d("userobj"," " + thisUser);
+                    }
                     //load home fragment here
                 } else {
                     // User is signed out
@@ -169,7 +174,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void startLogIn() {
-        LoginFragment loginFragment = LoginFragment.newInstance();
+        LoginFragment loginFragment = LoginFragment.newInstance(fDManager);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragmentFrame, loginFragment);
         ft.addToBackStack(null);
@@ -188,9 +193,14 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void logInFinish(User user) {
+    public void logInFinish(User usr) {
         //show action bar and load home fragment(upcoming), store given user object in shared preferences
+        //update group name in FirebaseDatabaseManger also
         getSupportActionBar().show();
+        this.user = usr;
+        saveUserObject(usr);
+        fDManager.updateGroupName(usr.groupName);
+        //databaseTest();
 
     }
 
@@ -199,8 +209,10 @@ public class MainActivity extends AppCompatActivity
         //set user object and load createInvitations fragment
         this.user = user;
         //save in shared preferences
-        saveUserObject(user);
-
+        saveUserObject(this.user);
+        fDManager.addUser(this.user);
+        fDManager.updateGroupName(user.groupName);
+        /*
         final ContentValues cv = new ContentValues();
         cv.put(CalendarContract.Calendars.ACCOUNT_NAME, user.firstName + " " + user.lastName);
         cv.put(CalendarContract.Calendars.ACCOUNT_TYPE, CalendarContract.ACCOUNT_TYPE_LOCAL);
@@ -226,11 +238,12 @@ public class MainActivity extends AppCompatActivity
         ContentResolver cr = getApplicationContext().getContentResolver();
         calUri = cr.insert(uri, cv);
         Long CAL_ID = Long.parseLong(calUri.getLastPathSegment());
-
+        */
+        getSupportFragmentManager().popBackStack();
         CreateInvitations createInvitationsFragment = CreateInvitations.newInstance();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragmentFrame, createInvitationsFragment);
-        //ft.addToBackStack(null);
+        ft.addToBackStack(null);
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         ft.commit();
     }
@@ -276,8 +289,12 @@ public class MainActivity extends AppCompatActivity
                 user.groupMembers.add(user.email);
                 user.groupMembersVariable.add(user.email);
             }
+
+            saveUserObject(user);
+            fDManager.updateUserObj(user);
         }
 
+        SendEmail emailInvites = new SendEmail(user.groupName, members, this);
     }
 
     @Override
@@ -292,7 +309,10 @@ public class MainActivity extends AppCompatActivity
         if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
         }
-        //saveUserObject(this.user);
+        if (this.user != null){
+            saveUserObject(this.user);
+        }
+
     }
 
     public User getUserObject(){
@@ -309,5 +329,34 @@ public class MainActivity extends AppCompatActivity
         prefsEditor.putString(USER, json);
         prefsEditor.commit();
         Log.d("User object saved for ", usr.email);
+    }
+
+    @Override
+    public void updateUserObject(User u) {
+        this.user = u;
+        saveUserObject(this.user);
+    }
+
+    public void databaseTest(){
+
+        /*
+        ArrayList<String> people = new ArrayList<>();
+        people.add("vynds12@gmail.com");
+        people.add("vynds@gmail.com");
+        Resource resource = new Resource("TestResource2", people, true, "test2", Resource.SingleStatus.AVAILABLE, Resource.CollectionStatus.AVAILABLE);
+        fDManager.addResource(resource);
+        */
+
+        /*
+        fDManager.getResourcesList(new FirebaseDatabaseManager.resourceListListener() {
+            @Override
+            public void resourceListCallback(ArrayList<Resource> resources) {
+                Log.d("ResourceListTest", " "+resources.size());
+                for(int i = 0; i< resources.size(); i++){
+                    Log.d("getresources", resources.get(i).getName());
+                }
+            }
+        });
+        */
     }
 }

@@ -93,15 +93,22 @@ public class CreateInvitations extends Fragment {
                 emails.add(email4);
                 emails.add(email5);
 
+                ArrayList<String> filteredEmails = new ArrayList<>();
+                for(int i = 0; i< emails.size(); i++){
+                    if(!emails.get(i).equals("")){
+                        filteredEmails.add(emails.get(i));
+                    }
+                }
+
                 //Validate Data
-                String validateString = ValidateData.validate(getResources(), emails);
+                String validateString = ValidateData.validate(getResources(), filteredEmails);
                 // If there is a validation error, display the error
                 if (validateString.length() > 0) {
                     Toast.makeText(getActivity(), validateString, Toast.LENGTH_LONG).show();
                     return;
                 }
 
-                createInvitationsInterface.invitationsFinish(emails);
+                createInvitationsInterface.invitationsFinish(filteredEmails);
             }
         });
     }
