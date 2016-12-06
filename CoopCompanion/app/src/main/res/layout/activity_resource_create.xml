@@ -1,31 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="@string/name"
+        android:id="@+id/string_name"/>
     <EditText
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:id="@+id/create_resource_name"
+        android:layout_toRightOf="@id/string_name"/>
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:id="@+id/checked_people"
+        android:layout_below="@id/string_name"/>
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="@string/people_assigned"
+        android:id="@+id/string_people_assigned"
+        android:layout_below="@id/checked_people"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/add_people"
+        android:text="@string/add_people"
+        android:layout_below="@id/checked_people"
+        android:layout_toRightOf="@id/string_people_assigned"/>
     <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/collection"
+        android:text="@string/collection"
+        android:layout_below="@id/string_due_date"/>
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:id="@+id/string_description"
+        android:text="@string/description"
+        android:layout_below="@id/collection"/>
     <EditText
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:id="@+id/description"
+        android:layout_below="@id/collection"
+        android:layout_toRightOf="@id/string_description"/>
 
-</LinearLayout>
+</RelativeLayout>

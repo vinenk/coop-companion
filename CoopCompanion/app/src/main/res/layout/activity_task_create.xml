@@ -52,33 +52,20 @@
     <CheckBox
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/repeatable"
-        android:text="@string/repeatable"
+        android:id="@+id/repeat_weekly"
+        android:text="@string/repeat_weekly"
         android:layout_below="@id/string_due_date"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/string_repeat"
-        android:text="@string/repeat"
-        android:layout_below="@id/repeatable"/>
-    <Spinner
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/repeat_var"
-        android:layout_below="@id/repeatable"
-        android:layout_toRightOf="@id/string_repeat"
-        android:clickable="false"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/string_description"
         android:text="@string/description"
-        android:layout_below="@id/string_repeat"/>
+        android:layout_below="@id/string_due_date"/>
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/description"
-        android:layout_below="@id/string_repeat"
+        android:layout_below="@id/string_due_date"
         android:layout_toRightOf="@id/string_description"/>
 
 </RelativeLayout>

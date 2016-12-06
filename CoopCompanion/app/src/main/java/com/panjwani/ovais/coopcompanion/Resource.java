@@ -24,7 +24,6 @@ public class Resource {
 
     public String name;
     public ArrayList<String> peopleAssigned;
-    //public Bitmap image;
     public boolean collection;
     public String description;
     public SingleStatus singleStatus;
@@ -37,15 +36,15 @@ public class Resource {
     }
 
     //removed Bitmap image from constructor
-    public Resource(String name, ArrayList<String> peopleAssigned, boolean collection, String description,
-                    SingleStatus singleStatus, CollectionStatus collectionStatus) {
+    public Resource(String name, ArrayList<String> peopleAssigned, boolean collection, String description) {
         this.name = name;
-        //this.image = image;
         this.peopleAssigned = peopleAssigned;
         this.collection = collection;
         this.description = description;
-        this.singleStatus = singleStatus;
-        this.collectionStatus = collectionStatus;
+        this.singleStatus = SingleStatus.AVAILABLE;
+        if (collection) {
+            this.collectionStatus = CollectionStatus.AVAILABLE;
+        }
     }
 
     //Required to make enums work with firebase database

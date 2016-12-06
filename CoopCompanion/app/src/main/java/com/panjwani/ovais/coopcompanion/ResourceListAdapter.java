@@ -7,7 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -29,7 +32,7 @@ public class ResourceListAdapter extends RecyclerView.Adapter<ResourceListAdapte
     @Override
     public void onBindViewHolder(ResourceListViewHolder holder, int position) {
         Resource resource = resources.get(position);
-        //holder.resourceImage.setImageBitmap(resource.image);
+        holder.resourceName.setText(resource.name);
     }
 
     @Override
@@ -48,11 +51,11 @@ public class ResourceListAdapter extends RecyclerView.Adapter<ResourceListAdapte
 
     public class ResourceListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        public ImageView resourceImage;
+        public TextView resourceName;
 
         public ResourceListViewHolder(View itemView) {
             super(itemView);
-            //this.resourceImage = (ImageView) itemView.findViewById(R.id.resource_image);
+            this.resourceName = (TextView) itemView.findViewById(R.id.resource_name);
         }
 
         @Override

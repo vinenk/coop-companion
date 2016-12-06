@@ -1,15 +1,9 @@
 package com.panjwani.ovais.coopcompanion;
 
-import android.content.ContentResolver;
-import android.content.ContentValues;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.CalendarContract;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
@@ -28,7 +22,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -212,33 +205,6 @@ public class MainActivity extends AppCompatActivity
         saveUserObject(this.user);
         fDManager.addUser(this.user);
         fDManager.updateGroupName(user.groupName);
-        /*
-        final ContentValues cv = new ContentValues();
-        cv.put(CalendarContract.Calendars.ACCOUNT_NAME, user.firstName + " " + user.lastName);
-        cv.put(CalendarContract.Calendars.ACCOUNT_TYPE, CalendarContract.ACCOUNT_TYPE_LOCAL);
-        cv.put(CalendarContract.Calendars.NAME, user.groupName);
-        cv.put(CalendarContract.Calendars.CALENDAR_DISPLAY_NAME, user.groupName);
-        cv.put(CalendarContract.Calendars.CALENDAR_COLOR, 0xEA8561);
-        //user can only read the calendar
-        if (user.admin) {
-            cv.put(CalendarContract.Calendars.CALENDAR_ACCESS_LEVEL, CalendarContract.Calendars.CAL_ACCESS_OWNER);
-        } else {
-            cv.put(CalendarContract.Calendars.CALENDAR_ACCESS_LEVEL, CalendarContract.Calendars.CAL_ACCESS_CONTRIBUTOR);
-        }
-        cv.put(CalendarContract.Calendars.OWNER_ACCOUNT, user.firstName + " " + user.lastName);
-        cv.put(CalendarContract.Calendars.VISIBLE, 1);
-        cv.put(CalendarContract.Calendars.SYNC_EVENTS, 1);
-        Uri uri = CalendarContract.Calendars.CONTENT_URI
-                .buildUpon()
-                .appendQueryParameter(CalendarContract.CALLER_IS_SYNCADAPTER, "true")
-                .appendQueryParameter(CalendarContract.Calendars.ACCOUNT_NAME, user.firstName + " " + user.lastName)
-                .appendQueryParameter(CalendarContract.Calendars.ACCOUNT_TYPE,
-                        CalendarContract.ACCOUNT_TYPE_LOCAL)
-                .build();
-        ContentResolver cr = getApplicationContext().getContentResolver();
-        calUri = cr.insert(uri, cv);
-        Long CAL_ID = Long.parseLong(calUri.getLastPathSegment());
-        */
         getSupportFragmentManager().popBackStack();
         CreateInvitations createInvitationsFragment = CreateInvitations.newInstance();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
